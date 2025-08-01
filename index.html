@@ -1,18 +1,18 @@
 <style>
   .slider-wrapper {
     position: relative;
-    max-width: 700px;
-    height: 320px;
+    max-width: 800px;
+    height: 300px;
     margin: 30px auto;
     border-radius: 12px;
     overflow: hidden;
   }
 
-  /* 1. Autoplay de los slides */
+  /* 1) Autoplay de los slides en 9s */
   @keyframes autoplay-slide {
-    /* Cada slide ocupa un 20% del ciclo (15s): aparece 0–20%, luego desaparece */
-    0%, 20%   { opacity: 1;}
-    25%, 100% { opacity: 0; }
+    /* visible 0–33.333%, oculto 38.333–100% */
+    0%, 33.333%   { opacity: 1; }
+    38.333%, 100% { opacity: 0; }
   }
 
   .slider-slide {
@@ -20,14 +20,11 @@
     top: 0; left: 0;
     width: 100%; height: 100%;
     opacity: 0;
-    animation: autoplay-slide 15s infinite;
+    animation: autoplay-slide 9s infinite;
   }
-  /* Escalonamos cada slide de 3s en 3s */
-  .slider-slide.slide1 { animation-delay: 0s; z-index: 5; }
-  .slider-slide.slide2 { animation-delay: 3s; z-index: 4;}
-  .slider-slide.slide3 { animation-delay: 6s; z-index: 3;}
-  .slider-slide.slide4 { animation-delay: 9s; z-index: 2;}
-  .slider-slide.slide5 { animation-delay: 12s;z-index: 1; }
+  .slider-slide.slide1 { animation-delay: 0s; z-index: 2; }
+  .slider-slide.slide2 { animation-delay: 3s; z-index: 1; }
+  .slider-slide.slide3 { animation-delay: 6s; z-index: 0;}
 
   .slider-slide img {
     width: 100%;
@@ -36,18 +33,16 @@
   }
 
   input[type="radio"] {
-    display: none; /* seguimos ocultando los radios */
+    display: none;
   }
 
-  /* (Opcional) Si quieres mantener el click manual, conserva esto */
+  /* manual override (pausa autoplay si clicas) */
   #s1:checked ~ .slider-wrapper .slide1,
   #s2:checked ~ .slider-wrapper .slide2,
-  #s3:checked ~ .slider-wrapper .slide3,
-  #s4:checked ~ .slider-wrapper .slide4,
-  #s5:checked ~ .slider-wrapper .slide5 {
+  #s3:checked ~ .slider-wrapper .slide3 {
     opacity: 1;
-    z-index: 6; /* Aseguramos que el slide activo esté al frente */
-    animation: none; /* pausa la animación automática cuando el usuario selecciona manualmente */
+    z-index: 2;
+    animation: none;
   }
 
   .slider-nav {
@@ -55,64 +50,50 @@
     margin-top: 10px;
   }
 
-  /* 2. Animación de “highlight” de los puntos */
+  /* 2) Animación de highlight en 9s */
   @keyframes highlight-dot {
-    0%, 20%   { background: #70bf4b; }
-    25%, 100% { background: #aaa; }
+    0%, 33.333%   { background: #70bf4b; }
+    38.333%, 100% { background: #aaa; }
   }
 
   .slider-nav label {
     display: inline-block;
-    width: 14px;
-    height: 14px;
+    width: 14px; height: 14px;
     margin: 0 5px;
     background: #aaa;
     border-radius: 50%;
     cursor: pointer;
-    animation: highlight-dot 15s infinite;
+    animation: highlight-dot 9s infinite;
   }
-  /* Sincronizamos delays iguales a los de los slides */
   .slider-nav label[for="s1"] { animation-delay: 0s; }
   .slider-nav label[for="s2"] { animation-delay: 3s; }
   .slider-nav label[for="s3"] { animation-delay: 6s; }
-  .slider-nav label[for="s4"] { animation-delay: 9s; }
-  .slider-nav label[for="s5"] { animation-delay: 12s; }
 
+  /* pausa puntos al hacer click y resalta sólo el activo */
   input[type="radio"]:checked ~ .slider-nav label {
-  animation: none;
-  background: #aaa;
-}
-
-/* Puntero activo en verde */
-#s1:checked ~ .slider-nav label[for="s1"],
-#s2:checked ~ .slider-nav label[for="s2"],
-#s3:checked ~ .slider-nav label[for="s3"],
-#s4:checked ~ .slider-nav label[for="s4"],
-#s5:checked ~ .slider-nav label[for="s5"] {
-  background: #70bf4b;
-}
+    animation: none;
+    background: #aaa;
+  }
+  #s1:checked ~ .slider-nav label[for="s1"],
+  #s2:checked ~ .slider-nav label[for="s2"],
+  #s3:checked ~ .slider-nav label[for="s3"] {
+    background: #70bf4b;
+  }
 </style>
 
-<!-- Botones (se pueden omitir si solo quieres autoplay) -->
+<!-- 3 inputs para 3 slides -->
 <input type="radio" name="slider" id="s1">
 <input type="radio" name="slider" id="s2">
 <input type="radio" name="slider" id="s3">
-<input type="radio" name="slider" id="s4">
-<input type="radio" name="slider" id="s5">
 
-<!-- Imágenes del slider -->
 <div class="slider-wrapper">
-  <div class="slider-slide slide1"><img src="https://picsum.photos/seed/a/800/300" alt="Imagen 1"></div>
-  <div class="slider-slide slide2"><img src="https://picsum.photos/seed/b/800/300" alt="Imagen 2"></div>
-  <div class="slider-slide slide3"><img src="https://picsum.photos/seed/c/800/300" alt="Imagen 3"></div>
-  <div class="slider-slide slide4"><img src="https://picsum.photos/seed/d/800/300" alt="Imagen 4"></div>
-  <div class="slider-slide slide5"><img src="https://picsum.photos/seed/e/800/300" alt="Imagen 5"></div>
+  <div class="slider-slide slide1"><img src="Images/Bienvenido.png" alt=""></div>
+  <div class="slider-slide slide2"><img src="Images/Preséntate.png" alt=""></div>
+  <div class="slider-slide slide3"><img src="Images/Importante.png" alt=""></div>
 </div>
 
 <div class="slider-nav">
   <label for="s1"></label>
   <label for="s2"></label>
   <label for="s3"></label>
-  <label for="s4"></label>
-  <label for="s5"></label>
 </div>
